@@ -90,15 +90,15 @@ shairport_sync_SOURCES += mdns_dns_sd.c
 endif
 
 if USE_METADATA_HUB
-shairport_sync_SOURCES += metadata_hub.c 
+shairport_sync_SOURCES += metadata_hub.c
 endif
 
 if USE_MQTT
-shairport_sync_SOURCES += mqtt.c 
+shairport_sync_SOURCES += mqtt.c
 endif
 
 if USE_DACP_CLIENT
-shairport_sync_SOURCES += dacp.c tinyhttp/chunk.c tinyhttp/header.c tinyhttp/http.c 
+shairport_sync_SOURCES += dacp.c tinyhttp/chunk.c tinyhttp/header.c tinyhttp/http.c
 endif
 
 BUILT_SOURCES =
@@ -112,7 +112,7 @@ shairport_sync_LDADD += lib_dbus_interface.a
 noinst_LIBRARIES += lib_dbus_interface.a
 lib_dbus_interface_a_SOURCES = dbus-interface.c
 shairport_sync_SOURCES += dbus-service.c
-BUILT_SOURCES += dbus-interface.h dbus-interface.c 
+BUILT_SOURCES += dbus-interface.h dbus-interface.c
 # We don't want to install this header
 noinst_HEADERS += $(BUILT_SOURCES)
 # Correctly clean the generated headers, but keep the xml description
@@ -191,8 +191,8 @@ if INSTALL_SYSTEMV
 	[ -f $(DESTDIR)$(sysconfdir)/init.d/shairport-sync ] || cp scripts/shairport-sync $(DESTDIR)$(sysconfdir)/init.d/
 endif
 if INSTALL_SYSTEMD
-	getent group shairport-sync &>/dev/null || groupadd -r shairport-sync >/dev/null
-	getent passwd shairport-sync &> /dev/null || useradd -r -M -g shairport-sync -s /usr/bin/nologin -G audio shairport-sync >/dev/null
+	mkdir -p $(DESTDIR)usr/lib/sysusers.d
+	echo 'u shairport-sync - "Shairport Sync daemon"' > $(DESTDIR)usr/lib/sysusers.d/shairport-sync.conf
 	[ -e $(DESTDIR)$(systemdsystemunitdir) ] || mkdir -p $(DESTDIR)$(systemdsystemunitdir)
 	[ -f $(DESTDIR)$(systemdsystemunitdir)/shairport-sync.service ] || cp scripts/shairport-sync.service $(DESTDIR)$(systemdsystemunitdir)
 endif
@@ -203,7 +203,7 @@ if INSTALL_FREEBSD_SERVICE
 	[ -e /var/run/shairport-sync ] || mkdir -p /var/run/shairport-sync
 	chown shairport-sync:shairport-sync /var/run/shairport-sync
 	[ -f /usr/local/etc/rc.d/shairport_sync ] || cp scripts/shairport-sync.freebsd /usr/local/etc/rc.d/shairport_sync
-	chmod 555 /usr/local/etc/rc.d/shairport_sync 
+	chmod 555 /usr/local/etc/rc.d/shairport_sync
 endif
 if INSTALL_CYGWIN_SERVICE
 	cp scripts/shairport-sync-config /usr/local/bin
